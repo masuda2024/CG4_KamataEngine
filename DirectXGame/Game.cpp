@@ -12,20 +12,7 @@ void Game::Initialize()
 	worldTransform_.Initialize();
 	camera_.Initialize();
 
-
-
-
-
-
-
-	model2_ = new Model2();
-	model2_->Initialize(model_, textureHandle_, &camera_);
-
-
-
-
-
-
+	Model2::StaticInitialize();
 
 
 
@@ -33,7 +20,7 @@ void Game::Initialize()
 
 void Game::Update() 
 { 
-	model2_->Update();
+	
 }
 
 void Game::Draw() 
@@ -42,8 +29,7 @@ void Game::Draw()
 	Model::PreDraw();
 
 	model_->Draw(worldTransform_, camera_, textureHandle_);
-	model2_->Draw();
-
+	
 
 	Model::PostDraw();
 }
@@ -51,5 +37,5 @@ void Game::Draw()
 Game::~Game() 
 { 
 	delete model_;
-	delete model2_;
+	Model2::StaticFinalize();
 }

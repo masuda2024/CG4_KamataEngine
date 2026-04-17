@@ -18,13 +18,6 @@ public:
 
 
 
-	Model2* model2_ = nullptr;
-
-
-
-
-
-
 
 
 
@@ -39,6 +32,9 @@ public:
 
 	// 3Dモデルデータ
 	KamataEngine::Model* model_ = nullptr;
+
+	KamataEngine::Model2* model2_ = nullptr;
+
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
