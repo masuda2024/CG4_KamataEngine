@@ -5,18 +5,26 @@ void Game::Initialize()
 {
 
 
+	
+	//model_ = Model::Create();
+	
+
+	Model2::StaticInitialize();
+	//model2_ = Model2::Create();
+	model2_ = Model2::CreateSquare();
+
+
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 
-	//model_ = Model::Create();
-	model2_ = Model2::Create();
-	
+
+
 	worldTransform_.Initialize();
 	camera_.Initialize();
 
-	Model2::StaticInitialize();
 
 
 
+	
 }
 
 void Game::Update() 
@@ -37,6 +45,7 @@ void Game::Draw()
 
 
 	Model2::PreDraw(commandList);
+	
 	model2_->Draw(worldTransform_, camera_, textureHandle_);
 
 	Model2::PostDraw();
