@@ -7,7 +7,7 @@ void Game::Initialize()
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 
-	model_ = Model::Create();
+	//model_ = Model::Create();
 	model2_ = Model2::Create();
 	
 	worldTransform_.Initialize();
@@ -46,7 +46,7 @@ void Game::Draw()
 
 Game::~Game() 
 { 
-	delete model_;
+	//delete model_;
 	delete model2_;
 	
 	Model2::StaticFinalize();
