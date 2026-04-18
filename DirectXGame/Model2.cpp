@@ -154,7 +154,7 @@ Model2* Model2::CreateSquare()
 	// インデックス数
 	const uint32_t kNumIndices = 6;
 
-	vertices.resize(kNumVertices);
+	vertices.resize(kNumVertices*6);
 	indices.resize(kNumIndices);
 
 	// 左下

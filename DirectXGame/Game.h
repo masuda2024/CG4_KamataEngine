@@ -20,10 +20,6 @@ public:
 
 
 
-
-
-
-
 	// ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTransform_;
 
@@ -32,6 +28,9 @@ public:
 
 	// 3Dモデルデータ
 	KamataEngine::Model* model_ = nullptr;
+	
+	KamataEngine::Model2* model2_ = nullptr;
+	
 
 
 	// テクスチャハンドル
