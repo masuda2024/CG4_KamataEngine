@@ -8,6 +8,8 @@ void Game::Initialize()
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 
 	model_ = Model::Create();
+	
+	
 
 	worldTransform_.Initialize();
 	camera_.Initialize();
@@ -30,12 +32,17 @@ void Game::Draw()
 
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	
-
 	Model::PostDraw();
+
+
+
+	
+
 }
 
 Game::~Game() 
 { 
 	delete model_;
+	
 	Model2::StaticFinalize();
 }

@@ -88,12 +88,14 @@ private:
 /// <summary>
 /// モデルデータ
 /// </summary>
-class Model2 {
+class Model2 
+{
 public: // 列挙子
 	/// <summary>
 	/// ルートパラメータ番号
 	/// </summary>
-	enum class RoomParameter {
+	enum class RoomParameter 
+	{
 		kWorldTransform, // ワールド変換行列
 		kCamera,         // カメラ
 		kMaterial,       // マテリアル
@@ -138,6 +140,17 @@ public: // 静的メンバ関数
 	/// <param name="divisionHorizontal">水平方向（経度）分割数</param>
 	/// <returns>生成されたモデル</returns>
 	static Model2* CreateSphere(uint32_t divisionVertial = 10, uint32_t divisionHorizontal = 10);
+
+
+
+	/// <summary>
+	/// 四角形の頂点インデックス生成
+	/// </summary>
+	/// <returns></returns>
+	static Model2* CreateSquare();
+
+
+
 
 	/// <summary>
 	/// 描画前処理
