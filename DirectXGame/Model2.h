@@ -148,8 +148,9 @@ public: // 静的メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	static Model2* CreateSquare();
+	static Model2* CreateSquare2();
 
-
+	static Model2* CreateSquare3();
 
 
 	/// <summary>

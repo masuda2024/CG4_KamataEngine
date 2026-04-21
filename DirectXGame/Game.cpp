@@ -1,6 +1,6 @@
 #include "Game.h"
 using namespace KamataEngine;
-
+using namespace MathUtility;
 void Game::Initialize() 
 {
 
@@ -12,7 +12,11 @@ void Game::Initialize()
 	Model2::StaticInitialize();
 	//model2_ = Model2::Create();
 	model2_ = Model2::CreateSquare();
-
+	
+	model2_2_ = Model2::CreateSquare2();
+	
+	model2_3_ = Model2::CreateSquare3();
+	
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 
@@ -20,8 +24,6 @@ void Game::Initialize()
 
 	worldTransform_.Initialize();
 	camera_.Initialize();
-
-
 
 
 	
@@ -46,8 +48,14 @@ void Game::Draw()
 
 	Model2::PreDraw(commandList);
 	
-	model2_->Draw(worldTransform_, camera_, textureHandle_);
 
+		model2_->Draw(worldTransform_, camera_, textureHandle_);
+		
+		model2_2_->Draw(worldTransform_, camera_, textureHandle_);
+	
+		model2_3_->Draw(worldTransform_, camera_, textureHandle_);
+	
+		
 	Model2::PostDraw();
 
 
