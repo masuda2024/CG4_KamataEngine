@@ -159,19 +159,19 @@ Model2* Model2::CreateSquare()
 
 	
 	// 左下
-	vertices[0].pos = {-10.0f, -10.0f, 0.0f};
+	vertices[0].pos = {-30.0f, -10.0f, 0.0f};
 	vertices[0].uv = {0.0f, 1.0f};
 	vertices[0].normal = {0.0f, 0.0f, -1.0f};
 	// 左上
-	vertices[1].pos = {-10.0f, 10.0f, 0.0f};
+	vertices[1].pos = {-30.0f, 10.0f, 0.0f};
 	vertices[1].uv = {0.0f, 0.0f};
 	vertices[1].normal = {0.0f, 0.0f, -1.0f};
 	// 右下
-	vertices[2].pos = {10.0f, -10.0f, 0.0f};
+	vertices[2].pos = {-10.0f, -10.0f, 0.0f};
 	vertices[2].uv = {1.0f, 1.0f};
 	vertices[2].normal = {0.0f, 0.0f, -1.0f};
 	// 右上
-	vertices[3].pos = {10.0f, 10.0f, 0.0f};
+	vertices[3].pos = {-10.0f, 10.0f, 0.0f};
 	vertices[3].uv = {1.0f, 0.0f};
 	vertices[3].normal = {0.0f, 0.0f, -1.0f};
 
@@ -193,6 +193,7 @@ Model2* Model2::CreateSquare()
 	return instance;
 }
 #pragma endregion
+
 #pragma region 2枚目
 Model2* Model2::CreateSquare2()
 {
@@ -210,19 +211,19 @@ Model2* Model2::CreateSquare2()
 	indices2.resize(kNumIndices2);
 
 	// 左下
-	vertices2[0].pos = {0.0f, -10.0f, 0.0f};
+	vertices2[0].pos = {-10.0f, 0.0f, 0.0f};
 	vertices2[0].uv = {0.0f, 1.0f};
 	vertices2[0].normal = {0.0f, 0.0f, -1.0f};
 	// 左上
-	vertices2[1].pos = {0.0f, 10.0f, 0.0f};
+	vertices2[1].pos = {-10.0f, 20.0f, 0.0f};
 	vertices2[1].uv = {0.0f, 0.0f};
 	vertices2[1].normal = {0.0f, 0.0f, -1.0f};
 	// 右下
-	vertices2[2].pos = {20.0f, -10.0f, 0.0f};
+	vertices2[2].pos = {10.0f, 0.0f, 0.0f};
 	vertices2[2].uv = {1.0f, 1.0f};
 	vertices2[2].normal = {0.0f, 0.0f, -1.0f};
 	// 右上
-	vertices2[3].pos = {20.0f, 10.0f, 0.0f};
+	vertices2[3].pos = {10.0f, 20.0f, 0.0f};
 	vertices2[3].uv = {1.0f, 0.0f};
 	vertices2[3].normal = {0.0f, 0.0f, -1.0f};
 
@@ -256,19 +257,19 @@ Model2* Model2::CreateSquare3()
 	indices3.resize(kNumIndices3);
 
 	// 左下
-	vertices3[0].pos = {10.0f, -10.0f, 0.0f};
+	vertices3[0].pos = {10.0f, -20.0f, 0.0f};
 	vertices3[0].uv = {0.0f, 1.0f};
 	vertices3[0].normal = {0.0f, 0.0f, -1.0f};
 	// 左上
-	vertices3[1].pos = {10.0f, 10.0f, 0.0f};
+	vertices3[1].pos = {10.0f, 00.0f, 0.0f};
 	vertices3[1].uv = {0.0f, 0.0f};
 	vertices3[1].normal = {0.0f, 0.0f, -1.0f};
 	// 右下
-	vertices3[2].pos = {30.0f, -10.0f, 0.0f};
+	vertices3[2].pos = {30.0f, -20.0f, 0.0f};
 	vertices3[2].uv = {1.0f, 1.0f};
 	vertices3[2].normal = {0.0f, 0.0f, -1.0f};
 	// 右上
-	vertices3[3].pos = {30.0f, 10.0f, 0.0f};
+	vertices3[3].pos = {30.0f, 00.0f, 0.0f};
 	vertices3[3].uv = {1.0f, 0.0f};
 	vertices3[3].normal = {0.0f, 0.0f, -1.0f};
 
