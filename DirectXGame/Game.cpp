@@ -17,6 +17,10 @@ void Game::Initialize()
 	
 	model2_3_ = Model2::CreateSquare3();
 	
+	model2_ring_ = Model2::CreateRing(5.0f, 10.0f, 8);
+	
+
+
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 
@@ -49,12 +53,13 @@ void Game::Draw()
 	Model2::PreDraw(commandList);
 	
 
-		model2_->Draw(worldTransform_, camera_, textureHandle_);
+		//model2_->Draw(worldTransform_, camera_, textureHandle_);
 		
-		model2_2_->Draw(worldTransform_, camera_, textureHandle_);
+		//model2_2_->Draw(worldTransform_, camera_, textureHandle_);
 	
-		model2_3_->Draw(worldTransform_, camera_, textureHandle_);
-	
+		//model2_3_->Draw(worldTransform_, camera_, textureHandle_);
+	   
+		model2_ring_->Draw(worldTransform_, camera_, textureHandle_);
 		
 	Model2::PostDraw();
 

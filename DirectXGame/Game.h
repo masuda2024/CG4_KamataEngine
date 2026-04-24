@@ -35,6 +35,8 @@ public:
 
 	KamataEngine::Model2* model2_3_ = nullptr;
 
+	KamataEngine::Model2* model2_ring_ = nullptr;
+
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 

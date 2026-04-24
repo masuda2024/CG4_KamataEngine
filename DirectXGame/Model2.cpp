@@ -286,6 +286,83 @@ Model2* Model2::CreateSquare3()
 }
 #pragma endregion
 
+Model2* Model2::CreateRing(float innerRadius, float outerRadius, uint32_t division) 
+{
+	Model2* instance = new Model2;
+
+	std::vector<Mesh::VertexPosNormalUv> vertices;
+	std::vector<uint32_t> indices;
+
+	const float PI = std::numbers::pi_v<float>;
+
+	for (uint32_t i = 0; i < division; i++)
+	{
+		float angle = (2.0f * PI / division) * i;
+		float nextAngle = (2.0f * PI / division) * (i + 1);
+
+
+
+		// 外側
+		Vector3 outer1 = {cos(angle) * outerRadius, sin(angle) * outerRadius, 0.0f};
+		Vector3 outer2 = {cos(nextAngle) * outerRadius, sin(nextAngle) * outerRadius, 0.0f};
+
+		// 内側
+		Vector3 inner1 = {cos(angle) * innerRadius, sin(angle) * innerRadius, 0.0f};
+		Vector3 inner2 = {cos(nextAngle) * innerRadius, sin(nextAngle) * innerRadius, 0.0f};
+
+
+		float u0 = (float)i / division;
+		float u1 = (float)(i + 1) / division;
+	
+
+
+		uint32_t base = (uint32_t)vertices.size();
+
+	
+
+		vertices.push_back({
+		    outer1, {0, 0, 1},
+             {u0, 0}
+        });
+		vertices.push_back({
+		    inner1, {0, 0, 1},
+             {u0, 1}
+        });
+		vertices.push_back({
+		    outer2, {0, 0, 1},
+             {u1, 0}
+        });
+		vertices.push_back({
+		    inner2, {0, 0, 1},
+             {u1, 1}
+        });
+
+
+		// 三角形（2枚）
+		indices.insert
+		(
+			indices.end(),
+			{
+				base + 0, 
+				base + 1,
+				base + 2,
+				base + 2,
+				base + 1,
+				base + 3
+			}
+		);
+
+	}
+
+	instance->InitializeFromVertices(vertices, indices);
+
+	return instance;
+}
+
+
+
+
+
 void Model2::PreDraw(ID3D12GraphicsCommandList* commandList) { ModelCommon2::GetInstance()->PreDraw(commandList); }
 
 void Model2::PostDraw() { ModelCommon2::GetInstance()->PostDraw(); }
