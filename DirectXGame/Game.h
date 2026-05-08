@@ -46,8 +46,9 @@ public:
 
 
 
-
-
+	//デバッグカメラ
+	bool isDebugCameraActive_ = false;
+	KamataEngine::DebugCamera* debugCamera_ = nullptr;
 
 
 
