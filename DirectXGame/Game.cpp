@@ -23,7 +23,8 @@ void Game::Initialize()
 
 
 
-	textureHandle_ = TextureManager::Load("uvChecker.png");
+	//textureHandle_ = TextureManager::Load("uvChecker.png");
+	textureHandle_ = TextureManager::Load("white1x1.png");
 
 
 
@@ -36,6 +37,7 @@ void Game::Initialize()
 
 void Game::Update()
 {
+
 #pragma region デバッグカメラ
 	debugCamera_->Update();
 
@@ -62,6 +64,10 @@ void Game::Update()
 #pragma endregion
 
 
+
+
+
+
 }
 
 void Game::Draw() 
@@ -79,13 +85,13 @@ void Game::Draw()
 	Model2::PreDraw(commandList);
 	
 
-		//model2_->Draw(worldTransform_, camera_, textureHandle_);
+		model2_->Draw(worldTransform_, camera_, textureHandle_);
 		
 		//model2_2_->Draw(worldTransform_, camera_, textureHandle_);
 	
 		//model2_3_->Draw(worldTransform_, camera_, textureHandle_);
 	   
-		model2_ring_->Draw(worldTransform_, camera_, textureHandle_);
+		//model2_ring_->Draw(worldTransform_, camera_, textureHandle_);
 		
 	Model2::PostDraw();
 
