@@ -1,6 +1,10 @@
 #pragma once
 #include "KamataEngine.h"
-#include"Model2.h"
+#include "Model2.h"
+#include "Effect.h"
+
+#include <list>
+
 
 
 class Game 
@@ -13,22 +17,19 @@ public:
 	~Game();
 
 	
+	
+	
+	uint32_t textureHandle_Circle_ = 0;
 
 
 
 
-
-
-
-	// ワールドトランスフォーム
-	KamataEngine::WorldTransform worldTransform_;
-
-	// カメラ
-	KamataEngine::Camera camera_;
 
 	// 3Dモデルデータ
+	
 	//KamataEngine::Model* model_ = nullptr;
 	
+
 	KamataEngine::Model2* model2_ = nullptr;
 	
 	KamataEngine::Model2* model2_2_ = nullptr;
@@ -36,9 +37,21 @@ public:
 	KamataEngine::Model2* model2_3_ = nullptr;
 
 	KamataEngine::Model2* model2_ring_ = nullptr;
+	
 
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0;
+
+
+
+
+	
+	// エフェクト生成
+	void EffectBorn(KamataEngine::Vector3 position);
+
+
+
+
+
+
 
 
 
@@ -53,11 +66,21 @@ public:
 
 
 private:
-
 	
 	
+	// ワールドトランスフォーム
+	KamataEngine::WorldTransform worldTransform_;
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+	// カメラ
+	KamataEngine::Camera camera_;
+	
 
 
+
+	KamataEngine::Model* modelEffect_ = nullptr;
+	// エフェクト一覧
+	std::list<Effect*> effects_;
 
 
 };
