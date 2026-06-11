@@ -11,6 +11,12 @@ public:
 	void Update();
 	void Draw(KamataEngine::Camera& camera);
 
+	//色変更オブジェクト
+	KamataEngine::ObjectColor objectColor_;
+	//色の数値
+	Vector4 color_;
+
+
 private:
 
 
@@ -18,6 +24,7 @@ private:
 	WorldTransform worldTransform_;
 	KamataEngine::Model* model_ = nullptr;
 
+	uint32_t MOVE_Particle = false;
 
 
 };

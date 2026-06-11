@@ -3,7 +3,6 @@
 #include <ctime>
 #include <cstdlib>
 
-
 using namespace KamataEngine;
 using namespace MathUtility;
 
@@ -153,8 +152,10 @@ void Game::Update()
 
 	#pragma endregion
 
-	particle_->Update();
 
+	
+	
+	particle_->Update();
 
 
 }
@@ -163,7 +164,7 @@ void Game::Draw()
 { 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
-
+	
 
 	Model::PreDraw();
 	
@@ -188,9 +189,19 @@ void Game::Draw()
 
 	#pragma endregion
 
-
+	#pragma region パーティクルの描画
+	if (Input::GetInstance()->TriggerKey(DIK_P)) 
+	{
+		ON_Particle = (ON_Particle == false);
+		OFF_Particle = (ON_Particle == false);
+	}
+	if (ON_Particle)
+	{
+		
+	}
 	particle_->Draw(camera_);
 
+	#pragma endregion
 
 	
 	Model::PostDraw();
