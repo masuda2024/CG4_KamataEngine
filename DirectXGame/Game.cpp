@@ -190,7 +190,16 @@ void Game::Update()
 		particle->Update();
 	}
 	
-
+	particles_.remove_if
+	([](Particle* particle_) {
+		if (particle_->isFinished())
+		{
+			delete particle_;
+			return true;
+		}
+		return false;
+	});
+	
 }
 
 void Game::Draw() 

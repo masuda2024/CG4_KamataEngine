@@ -17,6 +17,11 @@ public:
 	KamataEngine::Vector4 color_;
 	KamataEngine::Vector3 velocity_;
 	
+
+	
+	bool isFinished() { return isFinished_; }
+
+
 private:
 
 
@@ -26,5 +31,15 @@ private:
 
 	uint32_t MOVE_Particle = false;
 
+
+
+
+
+	// 終了フラグ
+	bool isFinished_ = false;
+	// 経過時間カウント
+	float counter_ = 0.0f;
+	// 存続時間(消滅までの時間)<秒>
+	const float kDuration = 1.0f;
 
 };
