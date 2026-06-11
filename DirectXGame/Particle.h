@@ -1,7 +1,7 @@
 #pragma once
 #include "KamataEngine.h"
 
-using namespace KamataEngine;
+
 
 
 class Particle
@@ -26,7 +26,7 @@ private:
 
 
 
-	WorldTransform worldTransform_;
+	KamataEngine::WorldTransform worldTransform_;
 	KamataEngine::Model* model_ = nullptr;
 
 	uint32_t MOVE_Particle = false;

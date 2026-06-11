@@ -9,7 +9,7 @@
 #include "Particle.h"
 
 
-using namespace KamataEngine;
+
 
 class Game 
 {

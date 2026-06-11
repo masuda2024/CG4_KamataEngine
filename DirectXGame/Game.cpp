@@ -201,7 +201,7 @@ void Game::Draw()
 
 	#pragma region エフェクト描画
 	
-
+	
 	if (Input::GetInstance()->TriggerKey(DIK_E))
 	{
 		ON_Effect = (ON_Effect == false);
@@ -209,11 +209,12 @@ void Game::Draw()
 	}
 	if (ON_Effect)
 	{
+		/*
 		// エフェクト描画
 		for (Effect* effect : effects_)
 		{
 			effect->Draw(camera_);
-		}
+		}*/
 	}
 	
 

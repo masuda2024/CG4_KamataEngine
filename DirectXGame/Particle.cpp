@@ -1,6 +1,9 @@
 #include "Particle.h"
 #include<algorithm>
+
+using namespace KamataEngine;
 using namespace MathUtility;
+
 
 void Particle::Initialize(KamataEngine::Model* model, KamataEngine::Vector3 position, KamataEngine::Vector3 velocity)
 { 
