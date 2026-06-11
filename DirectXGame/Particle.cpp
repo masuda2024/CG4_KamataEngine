@@ -2,13 +2,15 @@
 
 using namespace MathUtility;
 
-void Particle::Initialize(KamataEngine::Model* model) 
-{ 
+void Particle::Initialize(KamataEngine::Model* model, KamataEngine::Vector3 position) { 
 	assert(model); 
 
 	model_ = model;
 
 	worldTransform_.Initialize();
+
+	worldTransform_.translation_ = position;
+
 
 
 

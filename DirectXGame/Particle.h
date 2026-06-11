@@ -7,7 +7,7 @@ using namespace KamataEngine;
 class Particle
 {
 public:
-	void Initialize(KamataEngine::Model* model);
+	void Initialize(KamataEngine::Model* model,KamataEngine::Vector3 position);
 	void Update();
 	void Draw(KamataEngine::Camera& camera);
 
