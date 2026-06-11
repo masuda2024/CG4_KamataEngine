@@ -62,9 +62,16 @@ void Game::Initialize()
 
 
 
+	#pragma region パーティクル
+
+
+	modelParticle_ = KamataEngine::Model::CreateSphere(4, 4);
+	particle_ = new Particle();
+	particle_->Initialize(modelParticle_);
 
 
 
+	#pragma endregion
 
 
 
@@ -146,7 +153,7 @@ void Game::Update()
 
 	#pragma endregion
 
-
+	particle_->Update();
 
 
 
@@ -163,16 +170,26 @@ void Game::Draw()
 
 	#pragma region エフェクト描画
 	
-	// エフェクト描画
-	for (Effect* effect : effects_)
+
+	if (Input::GetInstance()->TriggerKey(DIK_E))
 	{
-		effect->Draw(camera_);
+		ON_Effect = (ON_Effect == false);
+		OFF_Effect = (ON_Effect == false);
 	}
+	if (ON_Effect)
+	{
+		// エフェクト描画
+		for (Effect* effect : effects_)
+		{
+			effect->Draw(camera_);
+		}
+	}
+	
 
 	#pragma endregion
 
 
-
+	particle_->Draw(camera_);
 
 
 	
@@ -239,6 +256,10 @@ Game::~Game()
 	delete modelEffect_;
 	#pragma endregion
 
+
+	//パーティクルの解放
+	delete modelParticle_;
+	delete particle_;
 
 
 

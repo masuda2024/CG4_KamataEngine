@@ -6,6 +6,10 @@
 #include <list>
 
 
+#include "Particle.h"
+
+
+using namespace KamataEngine;
 
 class Game 
 {
@@ -50,8 +54,8 @@ public:
 
 
 
-
-
+	//パーティクル
+	Particle* particle_ = nullptr;
 
 
 
@@ -76,11 +80,20 @@ private:
 	KamataEngine::Camera camera_;
 	
 
-
+	#pragma region エフェクト
 
 	KamataEngine::Model* modelEffect_ = nullptr;
 	// エフェクト一覧
 	std::list<Effect*> effects_;
+
+	uint32_t OFF_Effect = true;
+	uint32_t ON_Effect = false;
+
+	#pragma endregion
+
+	//パーティクル3Dモデルデータ
+	KamataEngine::Model* modelParticle_ = nullptr;
+
 
 
 };
