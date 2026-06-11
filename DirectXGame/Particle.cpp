@@ -14,7 +14,7 @@ void Particle::Initialize(KamataEngine::Model* model, KamataEngine::Vector3 posi
 
 	worldTransform_.translation_ = position;
 
-	worldTransform_.scale_ = {0.2f, 0.2f, 0.2f};
+	worldTransform_.scale_ = {0.5f, 0.5f, 0.5f};
 
 
 	//色の設定

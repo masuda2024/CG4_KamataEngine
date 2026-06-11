@@ -56,7 +56,7 @@ public:
 
 	//パーティクル
 	Particle* particle_ = nullptr;
-
+	void ParticleBorn(KamataEngine::Vector3 position);
 
 
 
@@ -91,6 +91,8 @@ private:
 
 	#pragma endregion
 
+	#pragma region パーティクル
+
 	//パーティクル3Dモデルデータ
 	KamataEngine::Model* modelParticle_ = nullptr;
 	std::list<Particle*> particles_;
@@ -98,5 +100,5 @@ private:
 	uint32_t OFF_Particle = true;
 	uint32_t ON_Particle = false;
 	
-
+	#pragma endregion
 };
