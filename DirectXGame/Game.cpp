@@ -19,6 +19,13 @@ void Game::Initialize()
 	//デバッグカメラ生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
+
+
+
+
+
+
+
 	#pragma region 四角形_リング
 	//model_ = Model::Create();
 	
@@ -71,10 +78,27 @@ void Game::Initialize()
 	for (int i = 0; i < 150; i++)
 	{
 		particle_ = new Particle();
-		KamataEngine::Vector3 P_position = {0.5f*i, 0.0f, 0.0f};
-		particle_->Initialize(modelParticle_, P_position);
+		KamataEngine::Vector3 P_position = {0.0f*i, 0.0f, 0.0f};
+		KamataEngine::Vector3 P_velocity =
+		{
+			distribution(randomEngine),
+			distribution(randomEngine),
+			0
+		};
+		
+		Normalize(P_velocity);
+		P_velocity *= distribution(randomEngine);
+		P_velocity *= 0.1f;
+
+
+		particle_->Initialize(modelParticle_, P_position, P_velocity);
 		//リストに追加
 		particles_.push_back(particle_);
+
+
+
+
+		
 	}
 
 	#pragma endregion
