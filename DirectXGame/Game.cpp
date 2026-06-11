@@ -118,7 +118,9 @@ void Game::Update()
 	}
 #pragma endregion
 
-// エフェクト発生
+	#pragma region エフェクト
+
+	// エフェクト発生
 	if (rand() % 5 == 0) 
 	{
 		Vector3 position = {distribution(randomEngine), distribution(randomEngine), 0};
@@ -142,6 +144,11 @@ void Game::Update()
 		return false;
 	});
 
+	#pragma endregion
+
+
+
+
 
 }
 
@@ -152,14 +159,22 @@ void Game::Draw()
 
 
 	Model::PreDraw();
-	//model_HitEffect_->Draw(worldTransform_, camera_, textureHandle_);
 	
-		// エフェクト描画
+
+	#pragma region エフェクト描画
+	
+	// エフェクト描画
 	for (Effect* effect : effects_)
 	{
 		effect->Draw(camera_);
 	}
-		
+
+	#pragma endregion
+
+
+
+
+
 	
 	Model::PostDraw();
 
@@ -186,7 +201,7 @@ void Game::Draw()
 
 
 
-
+#pragma region エフェクト発生
 // エフェクト発生
 void Game::EffectBorn(Vector3 position) 
 {
@@ -201,6 +216,9 @@ void Game::EffectBorn(Vector3 position)
 	}
 }
 
+#pragma endregion
+
+
 
 
 
@@ -211,6 +229,7 @@ Game::~Game()
 	//delete model_;
 	delete model2_;
 	
+	#pragma region エフェクトの解放
 	// エフェクト
 	for (Effect* effect : effects_)
 	{
@@ -218,7 +237,12 @@ Game::~Game()
 	}
 	effects_.clear();
 	delete modelEffect_;
-	
+	#pragma endregion
+
+
+
+
+
 
 	Model2::StaticFinalize();
 }
