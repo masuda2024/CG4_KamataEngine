@@ -20,7 +20,41 @@ void Game::Initialize()
 	debugCamera_ = new DebugCamera(1280, 720);
 
 
+	#pragma region フェーズ・フェード
+	// フェーズインから開始
+	phase_ = Phase::kFadeIn;
+	// フェード
+	fade_ = new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
+    #pragma endregion
 
+
+
+
+	#pragma region UI
+
+	// ESCのスプライト
+	ESC_Handle_ = TextureManager::Load("UI/ESC.png");
+	ESC_Sprite_ = KamataEngine::Sprite::Create(ESC_Handle_, {10, 100});
+
+	ESC_Handle_2 = TextureManager::Load("UI/Pushed_ESC.png");
+	ESC_Sprite_2 = KamataEngine::Sprite::Create(ESC_Handle_2, {10, 100});
+
+	
+	PoseUI_Handle_ = TextureManager::Load("UI/Pose_UI.png");
+	PoseUI_Sprite_ = KamataEngine::Sprite::Create(PoseUI_Handle_, {448, 164});
+
+	PoseUI_Handle_2 = TextureManager::Load("UI/Pushed_Pose_UI.png");
+	PoseUI_Sprite_2 = KamataEngine::Sprite::Create(PoseUI_Handle_2, {448, 164});
+
+	PoseUI2_Handle_ = TextureManager::Load("UI/Pose_UI_2.png");
+	PoseUI2_Sprite_ = KamataEngine::Sprite::Create(PoseUI2_Handle_, {448, 364});
+
+	PoseUI2_Handle_2 = TextureManager::Load("UI/Pushed_Pose_UI_2.png");
+	PoseUI2_Sprite_2 = KamataEngine::Sprite::Create(PoseUI2_Handle_2, {448, 364});
+	
+    #pragma endregion
 
 
 
@@ -38,7 +72,7 @@ void Game::Initialize()
 	
 	//model2_3_ = Model2::CreateSquare3();
 	
-	//model2_ring_ = Model2::CreateRing(5.0f, 10.0f, 8);
+	model2_ring_ = Model2::CreateRing(5.0f, 10.0f, 8);
 	
 	
 
@@ -81,7 +115,7 @@ void Game::Initialize()
 
 
 
-	//textureHandle_ = TextureManager::Load("uvChecker.png");
+	textureHandle_ = TextureManager::Load("uvChecker.png");
 	//textureHandle_ = TextureManager::Load("white1x1.png");
 	
 
@@ -127,7 +161,19 @@ void Game::Update()
 	}
 #pragma endregion
 
-	#pragma region エフェクト
+
+
+
+	switch (phase_)
+	{
+	case Phase::kPlay: 
+	{
+
+
+		if (gameActive)
+		{
+
+			#pragma region エフェクト
 
 	// エフェクト発生
 	if (rand() % 5 == 0) 
@@ -155,7 +201,7 @@ void Game::Update()
 
 	#pragma endregion
 
-	#pragma region パーティクル
+			#pragma region パーティクル
 	
 	if (rand() % 20 == 0)
 	{
@@ -186,6 +232,88 @@ void Game::Update()
 	});
 	
 	#pragma endregion
+
+		}
+
+
+		if (Input::GetInstance()->TriggerKey(DIK_ESCAPE))
+		{
+			phase_ = Phase::kPose;
+		}
+
+
+
+		break;
+	}
+
+	case Phase::kPose: 
+	{
+
+		gameActive = false;
+		if (Input::GetInstance()->TriggerKey(DIK_ESCAPE)) 
+		{
+			phase_ = Phase::kPlay;
+			gameActive = true;
+		}
+		if (Input::GetInstance()->TriggerKey(DIK_T)) 
+		{
+			phase_ = Phase::kFadeOut3;
+		}
+		break;
+	}
+
+	case Phase::kDeath: 
+	{
+		break;
+	}
+
+	case Phase::kEnemyDeath:
+	{
+		break;
+	}
+	case Phase::kFadeIn:
+	{	
+		// フェード
+		fade_->Update();
+		if (fade_->IsFinished()) 
+		{
+			phase_ = Phase::kPlay;
+		}
+		break;
+	}
+	case Phase::kFadeOut:
+	{
+		// フェード
+		fade_->Update();
+		if (fade_->IsFinished())
+		{
+			finishedGAME_ = true;
+		}
+		break;
+	}
+	case Phase::kFadeOut2:
+	{
+		// フェード
+		fade_->Update();
+		if (fade_->IsFinished()) 
+		{
+			finishedGAME2_ = true;
+		}
+		break;
+	}
+	case Phase::kFadeOut3:
+	{
+		// フェード
+		fade_->Update();
+		if (fade_->IsFinished())
+		{
+			finishedGAME3_ = true;
+		}
+		break;
+	}
+	}
+
+
 
 
 }
@@ -252,13 +380,48 @@ void Game::Draw()
 	
 		//model2_3_->Draw(worldTransform_, camera_, textureHandle_);
 	   
-		//model2_ring_->Draw(worldTransform_, camera_, textureHandle_);
+		model2_ring_->Draw(worldTransform_, camera_, textureHandle_);
 		
 	
 
 	Model2::PostDraw();
 
+	Sprite::PreDraw();
 
+	
+#pragma region UI
+	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn || phase_ == Phase::kPose || phase_ == Phase::kDeath || phase_ == Phase::kEnemyDeath) {
+		ESC_Sprite_->Draw();
+
+		if (Input::GetInstance()->PushKey(DIK_ESCAPE))
+		{
+			ESC_Sprite_2->Draw();
+		}
+
+		
+	}
+
+	// ポーズ画面
+	if (phase_ == Phase::kPose)
+	{
+		PoseUI_Sprite_->Draw();
+		PoseUI2_Sprite_->Draw();
+
+		if (Input::GetInstance()->PushKey(DIK_ESCAPE))
+		{
+			PoseUI_Sprite_2->Draw();
+		}
+
+		if (Input::GetInstance()->PushKey(DIK_T))
+		{
+			PoseUI2_Sprite_2->Draw();
+		}
+	}
+
+#pragma endregion
+
+
+	Sprite::PostDraw();
 }
 
 
@@ -333,6 +496,23 @@ Game::~Game()
 	}
 	particles_.clear();
 	#pragma endregion
+
+
+	
+#pragma region UI
+
+	delete ESC_Sprite_;
+	delete ESC_Sprite_2;
+
+	
+	delete PoseUI_Sprite_;
+	delete PoseUI_Sprite_2;
+
+	delete PoseUI2_Sprite_;
+	delete PoseUI2_Sprite_2;
+
+	
+#pragma endregion
 
 
 	Model2::StaticFinalize();
