@@ -40,6 +40,19 @@ void Game::Initialize()
 
 
 
+	#pragma region プレイヤー
+
+	modelPlayer_ = Model::CreateFromOBJ("player");
+	player_ = new Player();
+	player_->Initialize(modelPlayer_);
+	
+	
+	
+	#pragma endregion
+
+
+
+
 
 	#pragma region UI
 
@@ -164,7 +177,63 @@ void Game::Update()
 #pragma endregion
 
 
+	if (gameActive) 
+	{
+		stage_->Update();
 
+		player_->Update();
+
+		#pragma region エフェクト
+
+		// エフェクト発生
+		if (rand() % 5 == 0)
+		{
+			Vector3 position = {distribution(randomEngine), distribution(randomEngine), 0};
+			position *= 10;
+			EffectBorn(position);
+		}
+
+		// エフェクト更新
+		// effect_->Update();
+		for (Effect* effect : effects_) 
+		{
+			effect->Update();
+		}
+
+		// デスフラグの立ったエフェクトを削除
+		effects_.remove_if([](Effect* effect) {
+			if (effect->IsFinished()) {
+				delete effect;
+				return true;
+			}
+			return false;
+		});
+
+#pragma endregion
+
+		#pragma region パーティクル
+
+		if (rand() % 20 == 0)
+		{
+			KamataEngine::Vector3 P_position = {distribution(randomEngine) * 30.0f, distribution(randomEngine) * 20.0f, 0};
+			ParticleBorn(P_position);
+		}
+
+		for (Particle* particle : particles_)
+		{
+			particle->Update();
+		}
+
+		particles_.remove_if([](Particle* particle_) {
+			if (particle_->isFinished()) {
+				delete particle_;
+				return true;
+			}
+			return false;
+		});
+
+#pragma endregion
+	}
 
 	switch (phase_)
 	{
@@ -191,72 +260,7 @@ void Game::Update()
 
 
 
-		if (gameActive)
-		{
-			stage_->Update();
-
-			#pragma region エフェクト
-
-	// エフェクト発生
-	if (rand() % 5 == 0) 
-	{
-		Vector3 position = {distribution(randomEngine), distribution(randomEngine), 0};
-		position *= 10;
-		EffectBorn(position);
-	}
-
-	// エフェクト更新
-	// effect_->Update();
-	for (Effect* effect : effects_)
-	{
-		effect->Update();
-	}
-
-	// デスフラグの立ったエフェクトを削除
-	effects_.remove_if([](Effect* effect) {
-		if (effect->IsFinished()) {
-			delete effect;
-			return true;
-		}
-		return false;
-	});
-
-	#pragma endregion
-
-			#pragma region パーティクル
-	
-	if (rand() % 20 == 0)
-	{
-		KamataEngine::Vector3 P_position = {distribution(randomEngine) * 30.0f, distribution(randomEngine) * 20.0f, 0};
-		ParticleBorn(P_position);
-	}
-	
 		
-
-	
-
-
-	for (Particle* particle : particles_)
-	{
-		particle->Update();
-	}
-	
-
-
-
-	particles_.remove_if
-	([](Particle* particle_) {
-		if (particle_->isFinished())
-		{
-			delete particle_;
-			return true;
-		}
-		return false;
-	});
-	
-	#pragma endregion
-
-		}
 
 
 		if (Input::GetInstance()->TriggerKey(DIK_ESCAPE))
@@ -352,11 +356,59 @@ void Game::Update()
 void Game::Draw() 
 { 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+	// DirectXCommonインスタンスの取得
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
-	
+
+
+
+	Sprite::PreDraw(dxCommon->GetCommandList());
+
+	stage_->Draw();
+
+	#pragma region UI
+	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn || phase_ == Phase::kPose || phase_ == Phase::kDeath || phase_ == Phase::kEnemyDeath) 
+	{
+		ESC_Sprite_->Draw();
+
+		if (Input::GetInstance()->PushKey(DIK_ESCAPE))
+		{
+			ESC_Sprite_2->Draw();
+		}
+	}
+
+	// ポーズ画面
+	if (phase_ == Phase::kPose)
+	{
+		PoseUI_Sprite_->Draw();
+		PoseUI2_Sprite_->Draw();
+
+		if (Input::GetInstance()->PushKey(DIK_ESCAPE)) 
+		{
+			PoseUI_Sprite_2->Draw();
+		}
+
+		if (Input::GetInstance()->PushKey(DIK_T))
+		{
+			PoseUI2_Sprite_2->Draw();
+		}
+	}
+
+#pragma endregion
+
+	Sprite::PostDraw();
+
+	// 深度バッファクリア
+	dxCommon->ClearDepthBuffer();
+
+
 
 	Model::PreDraw();
 	
+	
+	// ここに3Dモデルインスタンスの描画処理を記述する
+	player_->Draw(camera_);
+
 
 	#pragma region エフェクト描画
 	
@@ -396,9 +448,15 @@ void Game::Draw()
 	}*/
 	
 	#pragma endregion
-
+	
 	
 	Model::PostDraw();
+	
+	
+	
+	
+	
+	
 
 
 
@@ -416,44 +474,15 @@ void Game::Draw()
 	
 
 	Model2::PostDraw();
+	/*
+	// スプライト描画前処理
+	Sprite::PreDraw(dxCommon->GetCommandList());
 
-	Sprite::PreDraw();
+	graphBar_->Draw();
+	drawNumber_->Draw();
 
-	stage_->Draw();
-
-	#pragma region UI
-	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn || phase_ == Phase::kPose || phase_ == Phase::kDeath || phase_ == Phase::kEnemyDeath) {
-		ESC_Sprite_->Draw();
-
-		if (Input::GetInstance()->PushKey(DIK_ESCAPE))
-		{
-			ESC_Sprite_2->Draw();
-		}
-
-		
-	}
-
-	// ポーズ画面
-	if (phase_ == Phase::kPose)
-	{
-		PoseUI_Sprite_->Draw();
-		PoseUI2_Sprite_->Draw();
-
-		if (Input::GetInstance()->PushKey(DIK_ESCAPE))
-		{
-			PoseUI_Sprite_2->Draw();
-		}
-
-		if (Input::GetInstance()->PushKey(DIK_T))
-		{
-			PoseUI2_Sprite_2->Draw();
-		}
-	}
-
-#pragma endregion
-
-
-	Sprite::PostDraw();
+	// スプライト描画後処理
+	Sprite::PostDraw();*/
 }
 
 
@@ -550,7 +579,7 @@ Game::~Game()
 
 	delete stage_;
 
-
+	delete player_;
 
 	Model2::StaticFinalize();
 }

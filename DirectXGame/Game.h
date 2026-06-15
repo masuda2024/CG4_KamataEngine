@@ -17,6 +17,7 @@
 
 #include "Stage.h"
 
+#include"Player.h"
 
 
 class Game 
@@ -185,5 +186,21 @@ private:
 	Fade* fade_ = nullptr;
 #pragma endregion
 
+
+
+
+	#pragma region プレイヤー
+
+
+	Player* player_ = nullptr;
+	// 3Dモデル
+	KamataEngine::Model* modelPlayer_ = nullptr;
+
+	// HP
+	//int hp_ = 200;
+
+
+
+	#pragma endregion
 
 };
