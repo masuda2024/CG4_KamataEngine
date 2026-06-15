@@ -30,6 +30,15 @@ void Game::Initialize()
     #pragma endregion
 
 
+	#pragma region 背景スクロール
+	// ファイル名を指定してテクスチャを読み込む
+	textureHandleStage_ = TextureManager::Load("Scenes/stage.png");
+	stage_ = new Stage();
+	stage_->Initialize(textureHandleStage_);
+	#pragma endregion
+
+
+
 
 
 	#pragma region UI
@@ -78,12 +87,6 @@ void Game::Initialize()
 
 	#pragma endregion
 
-
-
-
-
-
-
 	#pragma region エフェクト
 
 
@@ -99,8 +102,6 @@ void Game::Initialize()
 
 
 	#pragma endregion
-
-
 
 	#pragma region パーティクル
 
@@ -192,6 +193,7 @@ void Game::Update()
 
 		if (gameActive)
 		{
+			stage_->Update();
 
 			#pragma region エフェクト
 
@@ -387,11 +389,11 @@ void Game::Draw()
 	{
 		
 	}
-	
+	/*
 	for (Particle* particle : particles_)
 	{
 		particle->Draw(camera_);
-	}
+	}*/
 	
 	#pragma endregion
 
@@ -417,7 +419,8 @@ void Game::Draw()
 
 	Sprite::PreDraw();
 
-	
+	stage_->Draw();
+
 	#pragma region UI
 	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn || phase_ == Phase::kPose || phase_ == Phase::kDeath || phase_ == Phase::kEnemyDeath) {
 		ESC_Sprite_->Draw();
@@ -541,6 +544,12 @@ Game::~Game()
 
 	
 #pragma endregion
+
+
+
+
+	delete stage_;
+
 
 
 	Model2::StaticFinalize();

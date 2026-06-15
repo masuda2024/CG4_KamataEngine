@@ -1,13 +1,21 @@
 #pragma once
 #include "KamataEngine.h"
-#include "Model2.h"
-#include "Effect.h"
+
+
 
 #include <list>
 #include "Fade.h"
 
+#include "Model2.h"
+
+
+
+#include "Effect.h"
 #include "Particle.h"
 
+
+
+#include "Stage.h"
 
 
 
@@ -20,7 +28,8 @@ public:
 	void Draw();
 	~Game();
 
-	
+	#pragma region ゲームの状態管理
+
 	bool gameActive = true;
 
 
@@ -38,23 +47,15 @@ public:
 	bool IsFinishedGAME3() const { return finishedGAME3_; } ////ゲームクリア
 
 
+	#pragma endregion
 
 
 
 
-	
-	
-	uint32_t textureHandle_Circle_ = 0;
+	#pragma region 3Dモデルデータ
 
-
-
-
-
-	// 3Dモデルデータ
-	
 	//KamataEngine::Model* model_ = nullptr;
 	
-
 	KamataEngine::Model2* model2_ = nullptr;
 	
 	KamataEngine::Model2* model2_2_ = nullptr;
@@ -64,7 +65,7 @@ public:
 	KamataEngine::Model2* model2_ring_ = nullptr;
 	
 
-
+	#pragma endregion
 
 
 
@@ -73,12 +74,10 @@ public:
 	void EffectBorn(KamataEngine::Vector3 position);
 
 
-
-
 	//パーティクル
 	Particle* particle_ = nullptr;
 	void ParticleBorn(KamataEngine::Vector3 position);
-
+	uint32_t textureHandle_Circle_ = 0;
 
 
 
@@ -122,8 +121,6 @@ private:
 	uint32_t ON_Particle = false;
 	
 	#pragma endregion
-	//uint32_t f_h = 0;
-	//uint32_t f_v = 0;
 	
 	#pragma region ポーズ画面
 
@@ -149,6 +146,15 @@ private:
 	KamataEngine::Sprite* PoseUI2_Sprite_2 = nullptr;
 
 #pragma endregion
+
+
+
+	// テクスチャハンドル
+	uint32_t textureHandleStage_ = 0;
+	// クラス
+	Stage* stage_ = nullptr;
+
+
 
 
 
