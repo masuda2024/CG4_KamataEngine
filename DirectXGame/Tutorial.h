@@ -102,6 +102,6 @@ private:
 	KamataEngine::Sprite* tutorialSprite2_ = nullptr;
 	
 	
-	//uint32_t Botan_ = 0;
+	uint32_t Botan_ = 0;
 	
 };

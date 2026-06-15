@@ -122,8 +122,8 @@ private:
 	uint32_t ON_Particle = false;
 	
 	#pragma endregion
-
-
+	//uint32_t f_h = 0;
+	//uint32_t f_v = 0;
 	
 	#pragma region ポーズ画面
 

@@ -5,10 +5,43 @@ void Title::Initialize()
 {
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	titleSprite_ = KamataEngine::Sprite::Create(textureHandle_, {0, 0});
-
 	titleSprite_->SetSize({1280, 720});
 
-	//Botan_ = Audio::GetInstance()->LoadWave("Sounds/sound/Decision2.mp3");
+	CreditsHandle_ = TextureManager::Load("Scenes/Credits.png");
+	CreditsSprite_ = KamataEngine::Sprite::Create(CreditsHandle_, {10, 518});
+	
+
+
+
+
+
+
+	
+
+	Title_Text_H_ = TextureManager::Load("Scenes/Title_text.png");
+	Title_Text_S_ = KamataEngine::Sprite::Create(Title_Text_H_, {290, -100});
+	Title_Text_S_->SetSize({700, 212});
+
+
+
+
+
+
+	T_StartHandle_ = TextureManager::Load("UI/TitleUI.png");
+	T_StartSprite_ = KamataEngine::Sprite::Create(T_StartHandle_, {448, 364});
+
+	T_StartHandle_2 = TextureManager::Load("UI/Pushed_TitleUI.png");
+	T_StartSprite_2 = KamataEngine::Sprite::Create(T_StartHandle_2, {448, 364});
+
+
+
+
+
+
+
+
+
+	Botan_ = Audio::GetInstance()->LoadWave("Sounds/sound/Decision2.mp3");
 
 	// カメラの初期化
 	camera_.Initialize();
@@ -24,6 +57,30 @@ void Title::Initialize()
 void Title::Update()
 {
 
+
+
+
+	KamataEngine::Vector2 T_Text_Pos = Title_Text_S_->GetPosition();
+	
+	if (t_texMove)
+	{
+		T_Text_Pos.y += 1.0f;
+	}
+	Title_Text_S_->SetPosition(T_Text_Pos);
+
+	if (T_Text_Pos.y == 100.0f)
+	{
+		t_texMove = false;
+	}
+
+	// タイマーを進める (毎フレーム +1)
+	blinkTimer_++;
+	if (blinkTimer_ >= 60) 
+	{
+		blinkTimer_ = 0;
+	}
+
+
 	switch (phase_)
 	{
 	case Phase::kMain:
@@ -32,7 +89,7 @@ void Title::Update()
 		if (Input::GetInstance()->TriggerKey(DIK_SPACE) || Input::GetInstance()->IsTriggerMouse(0))
 		{
 
-			//Audio::GetInstance()->PlayWave(Botan_);
+			Audio::GetInstance()->PlayWave(Botan_);
 			// フェードアウト開始
 			phase_ = Phase::kFadeOut;
 			fade_->Start(Fade::Status::FadeOut, 1.0f);
@@ -66,7 +123,28 @@ void Title::Draw()
 
 	Sprite::PreDraw();
 
-	titleSprite_->Draw();
+	//titleSprite_->Draw();
+
+	CreditsSprite_->Draw();
+
+	Title_Text_S_->Draw();
+
+
+	// 60で割った余りが30以上の場合のみ描画（点滅処理）
+	if (blinkTimer_ % 60 >= 30)
+	{
+		// マウスが押されている間は押された用の画像、それ以外は通常画像
+		if (Input::GetInstance()->IsPressMouse(0))
+		{
+			T_StartSprite_2->Draw();
+		} else
+		{
+			T_StartSprite_->Draw();
+		}
+	}
+	
+
+
 
 	Sprite::PostDraw();
 
@@ -81,4 +159,11 @@ Title::~Title()
 	delete fade_;
 	// タイトルのスプライト
 	delete titleSprite_;
+	delete CreditsSprite_;
+	delete Title_Text_S_;
+
+
+
+	delete T_StartSprite_;
+	delete T_StartSprite_2;
 }

@@ -86,7 +86,7 @@ void Tutorial::Initialize()
 #pragma endregion
 
 	// Springin ボタン・システム(1)　決定2
-	//Botan_ = Audio::GetInstance()->LoadWave("Sounds/sound/Decision2.mp3");
+	Botan_ = Audio::GetInstance()->LoadWave("Sounds/sound/Decision2.mp3");
 
 	// カメラの初期化
 	camera_.Initialize();
@@ -119,7 +119,7 @@ void Tutorial::Update()
 		// シーンの終了条件(スキップ)
 		if (Input::GetInstance()->TriggerKey(DIK_S))
 		{
-			//Audio::GetInstance()->PlayWave(Botan_);
+			Audio::GetInstance()->PlayWave(Botan_);
 			// フェードアウト開始
 			phase_ = Phase::kFadeOut;
 			fade_->Start(Fade::Status::FadeOut, 1.0f);

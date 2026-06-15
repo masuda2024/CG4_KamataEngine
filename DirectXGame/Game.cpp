@@ -72,7 +72,7 @@ void Game::Initialize()
 	
 	//model2_3_ = Model2::CreateSquare3();
 	
-	model2_ring_ = Model2::CreateRing(5.0f, 10.0f, 8);
+	//model2_ring_ = Model2::CreateRing(5.0f, 10.0f, 8);
 	
 	
 
@@ -108,8 +108,9 @@ void Game::Initialize()
 	srand((unsigned)time(NULL));
 
 	#pragma endregion
-
-
+	//効果音ラボ/生活[3]スポーツ・その他/おなら
+	//f_h = Audio::GetInstance()->LoadWave("Sounds/sound/Fart.mp3");
+	
 
 	#pragma region テクスチャ
 
@@ -170,6 +171,25 @@ void Game::Update()
 	{
 
 
+		#pragma region 仮設コード
+		
+		/**/
+		// ゲームクリア(仮)
+		if (Input::GetInstance()->TriggerKey(DIK_C))
+		{
+		    phase_ = Phase::kEnemyDeath;
+		}
+		// ゲームオーバー(仮)
+		if (Input::GetInstance()->TriggerKey(DIK_O))
+		{
+		    phase_ = Phase::kDeath;
+		}
+		
+		#pragma endregion
+
+
+
+
 		if (gameActive)
 		{
 
@@ -208,7 +228,8 @@ void Game::Update()
 		KamataEngine::Vector3 P_position = {distribution(randomEngine) * 30.0f, distribution(randomEngine) * 20.0f, 0};
 		ParticleBorn(P_position);
 	}
-
+	
+		
 
 	
 
@@ -264,11 +285,19 @@ void Game::Update()
 
 	case Phase::kDeath: 
 	{
+		// フェードアウト開始
+		phase_ = Phase::kFadeOut;
+		fade_->Start(Fade::Status::FadeOut, 1.0f);
+
 		break;
 	}
 
 	case Phase::kEnemyDeath:
 	{
+		// フェードアウト開始
+		phase_ = Phase::kFadeOut2;
+		fade_->Start(Fade::Status::FadeOut, 1.0f);
+
 		break;
 	}
 	case Phase::kFadeIn:
@@ -380,7 +409,7 @@ void Game::Draw()
 	
 		//model2_3_->Draw(worldTransform_, camera_, textureHandle_);
 	   
-		model2_ring_->Draw(worldTransform_, camera_, textureHandle_);
+		//model2_ring_->Draw(worldTransform_, camera_, textureHandle_);
 		
 	
 
@@ -389,7 +418,7 @@ void Game::Draw()
 	Sprite::PreDraw();
 
 	
-#pragma region UI
+	#pragma region UI
 	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn || phase_ == Phase::kPose || phase_ == Phase::kDeath || phase_ == Phase::kEnemyDeath) {
 		ESC_Sprite_->Draw();
 
@@ -447,7 +476,7 @@ void Game::EffectBorn(Vector3 position)
 void Game::ParticleBorn(KamataEngine::Vector3 position)
 {
 	
-
+	
 	modelParticle_ = KamataEngine::Model::CreateSphere(4, 4);
 
 	for (int i = 0; i < 150; i++)
@@ -488,7 +517,6 @@ Game::~Game()
 
 	#pragma region パーティクルの解放
 	delete modelParticle_;
-	delete particle_;
 	
 	for (Particle* particle : particles_) 
 	{
@@ -499,7 +527,7 @@ Game::~Game()
 
 
 	
-#pragma region UI
+	#pragma region UI
 
 	delete ESC_Sprite_;
 	delete ESC_Sprite_2;

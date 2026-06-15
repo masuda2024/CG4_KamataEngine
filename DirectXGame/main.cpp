@@ -5,8 +5,8 @@ using namespace KamataEngine;
 #include "Title.h"
 #include "Tutorial.h"
 #include"Game.h"
-//#include "Clear.h"
-//#include "Over.h"
+#include "Clear.h"
+#include "Over.h"
 
 
 
@@ -18,8 +18,8 @@ enum class Scene
 	kTitle,
 	kTutorial,
 	kGame,
-	//kClear,
-	//kOver,
+	kClear,
+	kOver,
 };
 Scene scene = Scene::kUnknown;
 void ChangeScene();
@@ -36,13 +36,13 @@ Tutorial* tutorial = nullptr;
 // ゲームシーンのインスタンス生成
 Game* game = nullptr;
 
-/*
+
 // ゲームクリアシーンの生成
 Clear* clear = nullptr;
 
 // ゲームオーバーシーンの生成
 Over* over = nullptr;
-*/
+
 
 #pragma endregion
 
@@ -78,12 +78,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	// ゲームの初期化
 	game->Initialize();
 
-	/*
+	
 	clear = new Clear;
 	clear->Initialize();
+
 	over = new Over;
 	over->Initialize();
-	*/
+	
 
 	#pragma endregion
 
@@ -126,8 +127,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	delete title;
 	delete tutorial;
 	delete game;
-	//delete clear;
-	//delete over;
+	delete clear;
+	delete over;
 	game = nullptr;
 
 #pragma endregion
@@ -157,15 +158,15 @@ void UpdateScene()
 		game->Update();
 
 		break;
-/*
+
 	case Scene::kClear:
-		gameClear->Update();
+		clear->Update();
 		break;
 
 	case Scene::kOver:
-		gameOver->Update();
+		over->Update();
 		break;
-		*/
+		
 	}
 }
 
@@ -211,58 +212,59 @@ void ChangeScene()
 
 	case Scene::kGame:
 
-		/*
+		
 		if (game->IsFinishedGAME()) 
 		{
 
 			// 音声停止
-			Audio::GetInstance()->StopWave(G_Voice_);
+			//Audio::GetInstance()->StopWave(G_Voice_);
 
 			// シーンの変更
 			scene = Scene::kOver;
 
 			// 旧シーンの解放
-			delete gameScene;
-			gameScene = nullptr;
+			delete game;
+			game = nullptr;
 			// クリアオーバーの生成
-			gameOver = new Over;
+			over = new Over;
 			// クリアオーバーの初期化
-			gameOver->Initialize();
+			over->Initialize();
 
 			// ゲームオーバーシーンの音楽を再生
 			// O_Voice_ = Audio::GetInstance()->PlayWave(O_Handle_, true);
 
-		} else if (gameScene->IsFinishedGAME2()) {
+		} else if (game->IsFinishedGAME2())
+		{
 			// 音声停止
-			Audio::GetInstance()->StopWave(G_Voice_);
+			//Audio::GetInstance()->StopWave(G_Voice_);
 
 			// プレイヤーが敵を倒した場合
 			// シーンの変更
 			scene = Scene::kClear;
 
 			// 旧シーンの解放
-			delete gameScene;
-			gameScene = nullptr;
+			delete game;
+			game = nullptr;
 
 			// クリアシーンの生成
-			gameClear = new Clear;
+			clear = new Clear;
 			// クリアシーンの初期化
-			gameClear->Initialize();
+			clear->Initialize();
 
 			// ゲームクリアシーンの音楽を再生
 			// C_Voice_ = Audio::GetInstance()->PlayWave(C_Handle_, true);
-		} else if (gameScene->IsFinishedGAME3())
+		} else if (game->IsFinishedGAME3())
 		{
 			// 音声停止
-			Audio::GetInstance()->StopWave(G_Voice_);
+			//Audio::GetInstance()->StopWave(G_Voice_);
 
-			// プレイヤーが敵を倒した場合
+			
 			// シーンの変更
 			scene = Scene::kTitle;
 
 			// 旧シーンの解放
-			delete gameScene;
-			gameScene = nullptr;
+			delete game;
+			game = nullptr;
 
 			// タイトルシーンの生成
 			title = new Title;
@@ -272,13 +274,13 @@ void ChangeScene()
 			// タイトルの音楽を再生
 			//T_Voice_ = Audio::GetInstance()->PlayWave(T_Handle_, true);
 		}
-*/
+
 		break;
 		
-		/*
+		
 	case Scene::kClear:
 
-		if (gameClear->IsFinishedC())
+		if (clear->IsFinishedC())
 		{
 			// 音声停止
 			// Audio::GetInstance()->StopWave(C_Voice_);
@@ -287,8 +289,8 @@ void ChangeScene()
 			scene = Scene::kTitle;
 
 			// 旧シーンの解放
-			delete gameClear;
-			gameClear = nullptr;
+			delete clear;
+			clear = nullptr;
 
 			// タイトルシーンの生成
 			title = new Title;
@@ -296,28 +298,30 @@ void ChangeScene()
 			title->Initialize();
 
 			// タイトルの音楽を再生
-			T_Voice_ = Audio::GetInstance()->PlayWave(T_Handle_, true);
-		} else if (gameClear->IsFinishedC2()) {
+			//T_Voice_ = Audio::GetInstance()->PlayWave(T_Handle_, true);
+		} else if (clear->IsFinishedC2())
+		{
 			// シーンの変更
 			scene = Scene::kGame;
 
 			// 旧シーンの解放
-			delete gameClear;
-			gameClear = nullptr;
+			delete clear;
+			clear = nullptr;
 
 			// 新シーンの生成と初期化
-			gameScene = new Game();
-			gameScene->Initialize();
+			game = new Game();
+			game->Initialize();
 
 			// ゲームシーンの音楽を再生
-			G_Voice_ = Audio::GetInstance()->PlayWave(G_Handle_, true);
+			//G_Voice_ = Audio::GetInstance()->PlayWave(G_Handle_, true);
 		}
 
 		break;
 
 	case Scene::kOver:
 
-		if (gameOver->IsFinishedO()) {
+		if (over->IsFinishedO())
+		{
 
 			// 音声停止
 			// Audio::GetInstance()->StopWave(O_Voice_);
@@ -326,8 +330,8 @@ void ChangeScene()
 			scene = Scene::kTitle;
 
 			// 旧シーンの解放
-			delete gameOver;
-			gameOver = nullptr;
+			delete over;
+			over = nullptr;
 
 			// タイトルシーンの生成
 			title = new Title;
@@ -335,23 +339,24 @@ void ChangeScene()
 			title->Initialize();
 
 			// タイトルの音楽を再生
-			T_Voice_ = Audio::GetInstance()->PlayWave(T_Handle_, true);
-		} else if (gameOver->IsFinishedO2()) {
+			//T_Voice_ = Audio::GetInstance()->PlayWave(T_Handle_, true);
+		} else if (over->IsFinishedO2())
+		{
 			// シーンの変更
 			scene = Scene::kGame;
 
 			// 旧シーンの解放
-			delete gameOver;
-			gameOver = nullptr;
+			delete over;
+			over = nullptr;
 
 			// 新シーンの生成と初期化
-			gameScene = new Game();
-			gameScene->Initialize();
+			game = new Game();
+			game->Initialize();
 
 			// ゲームシーンの音楽を再生
-			G_Voice_ = Audio::GetInstance()->PlayWave(G_Handle_, true);
+			//G_Voice_ = Audio::GetInstance()->PlayWave(G_Handle_, true);
 		}
-		break;*/
+		break;
 	}
 }
 
@@ -371,14 +376,14 @@ void DrawScene()
 	case Scene::kGame:
 		game->Draw();
 		break;
-		/*
+		
 	case Scene::kClear:
-		gameClear->Draw();
+		clear->Draw();
 		break;
 
 	case Scene::kOver:
-		gameOver->Draw();
+		over->Draw();
 		break;
-		*/
+		
 	}
 }
