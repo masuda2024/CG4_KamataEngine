@@ -46,7 +46,11 @@ void Game::Initialize()
 	player_ = new Player();
 	player_->Initialize(modelPlayer_);
 	
-	
+
+	textureHandleGraph_ = TextureManager::Load("white1x1.png");
+	graphBar_ = new GraphBar();
+	graphBar_->Initialize(textureHandleGraph_);
+
 	
 	#pragma endregion
 
@@ -182,6 +186,12 @@ void Game::Update()
 		stage_->Update();
 
 		player_->Update();
+		graphBar_->Update(hp_);
+		hp_--;
+		if (hp_ < 0)
+		{
+			hp_ = 200u;
+		}
 
 		#pragma region エフェクト
 
@@ -474,15 +484,15 @@ void Game::Draw()
 	
 
 	Model2::PostDraw();
-	/*
+	
 	// スプライト描画前処理
 	Sprite::PreDraw(dxCommon->GetCommandList());
 
 	graphBar_->Draw();
-	drawNumber_->Draw();
+	//drawNumber_->Draw();
 
 	// スプライト描画後処理
-	Sprite::PostDraw();*/
+	Sprite::PostDraw();
 }
 
 
@@ -580,6 +590,7 @@ Game::~Game()
 	delete stage_;
 
 	delete player_;
+	delete graphBar_;
 
 	Model2::StaticFinalize();
 }

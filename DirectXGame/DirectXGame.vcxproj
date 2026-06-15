@@ -167,6 +167,7 @@
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="GraphBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model2.cpp" />
     <ClCompile Include="MyMath.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="GraphBar.h" />
     <ClInclude Include="Model2.h" />
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="Over.h" />
