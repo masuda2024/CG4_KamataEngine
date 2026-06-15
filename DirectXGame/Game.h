@@ -20,6 +20,7 @@
 #include"Player.h"
 #include "GraphBar.h"
 
+#include"DrawNumber.h"
 
 class Game 
 {
@@ -208,5 +209,14 @@ private:
 
 
 	#pragma endregion
+
+
+
+
+	uint32_t textureHandleNumber_ = 0;
+	DrawNumber* drawNumber_ = nullptr;
+	// score
+	int gameScore_ = 0;
+
 
 };

@@ -55,6 +55,9 @@ void Game::Initialize()
 	#pragma endregion
 
 
+	textureHandleNumber_ = TextureManager::Load("UI/number.png");
+	drawNumber_ = new DrawNumber();
+	drawNumber_->Initialize(textureHandleNumber_);
 
 
 
@@ -192,6 +195,11 @@ void Game::Update()
 		{
 			hp_ = 200u;
 		}
+
+		gameScore_++;
+		drawNumber_->Update(gameScore_);
+
+
 
 		#pragma region エフェクト
 
@@ -489,7 +497,7 @@ void Game::Draw()
 	Sprite::PreDraw(dxCommon->GetCommandList());
 
 	graphBar_->Draw();
-	//drawNumber_->Draw();
+	drawNumber_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -591,6 +599,8 @@ Game::~Game()
 
 	delete player_;
 	delete graphBar_;
+
+	delete drawNumber_;
 
 	Model2::StaticFinalize();
 }
