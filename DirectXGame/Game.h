@@ -112,6 +112,12 @@ private:
 	uint32_t OFF_Effect = true;
 	uint32_t ON_Effect = false;
 
+	// エフェクト発生の間隔（例: 30フレームに1回 = 約0.5秒に1回）
+	const int kEffectInterval = 60;
+	// 発射タイマー
+	int effectTimer_ = 0;
+
+
 	#pragma endregion
 
 	#pragma region パーティクル
@@ -125,7 +131,7 @@ private:
 	
 	#pragma endregion
 	
-	#pragma region ポーズ画面
+	#pragma region UI・ポーズ画面
 
 	// ESC
 	uint32_t ESC_Handle_ = 0;
@@ -148,7 +154,23 @@ private:
 	uint32_t PoseUI2_Handle_2 = 0;
 	KamataEngine::Sprite* PoseUI2_Sprite_2 = nullptr;
 
-#pragma endregion
+
+
+	uint32_t E_ON_H_ = 0;
+	KamataEngine::Sprite* E_ON_S_ = nullptr;
+	uint32_t E_OFF_H_ = 0;
+	KamataEngine::Sprite* E_OFF_S_ = nullptr;
+
+	uint32_t P_ON_H_ = 0;
+	KamataEngine::Sprite* P_ON_S_ = nullptr;
+	uint32_t P_OFF_H_ = 0;
+	KamataEngine::Sprite* P_OFF_S_ = nullptr;
+
+
+
+
+
+	#pragma endregion
 
 
 

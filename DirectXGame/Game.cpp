@@ -84,6 +84,21 @@ void Game::Initialize()
 	PoseUI2_Handle_2 = TextureManager::Load("UI/Pushed_Pose_UI_2.png");
 	PoseUI2_Sprite_2 = KamataEngine::Sprite::Create(PoseUI2_Handle_2, {448, 364});
 	
+
+
+	E_ON_H_ = TextureManager::Load("UI/Effect_ON.png");
+	E_ON_S_ = KamataEngine::Sprite::Create(E_ON_H_, {148, 100});
+
+	E_OFF_H_ = TextureManager::Load("UI/Effect_OFF.png");
+	E_OFF_S_ = KamataEngine::Sprite::Create(E_OFF_H_, {148, 100});
+
+	P_ON_H_ = TextureManager::Load("UI/Particle_ON.png");
+	P_ON_S_ = KamataEngine::Sprite::Create(P_ON_H_, {286, 100});
+	
+	P_OFF_H_ = TextureManager::Load("UI/Particle_OFF.png");
+	P_OFF_S_ = KamataEngine::Sprite::Create(P_OFF_H_, {286, 100});
+
+
     #pragma endregion
 
 
@@ -130,8 +145,6 @@ void Game::Initialize()
 	srand((unsigned)time(NULL));
 
 	#pragma endregion
-	//効果音ラボ/生活[3]スポーツ・その他/おなら
-	//f_h = Audio::GetInstance()->LoadWave("Sounds/sound/Fart.mp3");
 	
 
 	#pragma region テクスチャ
@@ -187,6 +200,8 @@ void Game::Update()
 
 	if (gameActive) 
 	{
+
+
 		stage_->Update();
 
 		player_->Update();
@@ -204,12 +219,25 @@ void Game::Update()
 
 		#pragma region エフェクト
 
+		// タイマーが動いていれば減算する
+		if (effectTimer_ > 0)
+		{
+			effectTimer_--;
+		}
+		
 		// エフェクト発生
 		if (rand() % 5 == 0)
 		{
-			Vector3 position = {distribution(randomEngine), distribution(randomEngine), 0};
-			position *= 10;
-			EffectBorn(position);
+			// タイマーが0の時だけ生成を許可する
+			if (effectTimer_ <= 0)
+			{
+				Vector3 position = {distribution(randomEngine), distribution(randomEngine), 0};
+				position *= 10;
+				EffectBorn(position);
+				// エフェクトを作ったらタイマーをセットして、しばらく作れないようにする
+				effectTimer_ = kEffectInterval;
+			}
+			
 		}
 
 		// エフェクト更新
@@ -228,7 +256,7 @@ void Game::Update()
 			return false;
 		});
 
-#pragma endregion
+		#pragma endregion
 
 		#pragma region パーティクル
 
@@ -251,7 +279,7 @@ void Game::Update()
 			return false;
 		});
 
-#pragma endregion
+		#pragma endregion
 	}
 
 	switch (phase_)
@@ -408,20 +436,21 @@ void Game::Draw()
 		ON_Effect = (ON_Effect == false);
 		OFF_Effect = (ON_Effect == false);
 	}
-	if (ON_Effect)
+	if (ON_Effect) 
 	{
-		/*
 		// エフェクト描画
 		for (Effect* effect : effects_)
 		{
 			effect->Draw(camera_);
-		}*/
+		}
 	}
+	
 	
 
 	#pragma endregion
 
 	#pragma region パーティクルの描画
+	
 	if (Input::GetInstance()->TriggerKey(DIK_P)) 
 	{
 		ON_Particle = (ON_Particle == false);
@@ -429,13 +458,13 @@ void Game::Draw()
 	}
 	if (ON_Particle)
 	{
-		
+		for (Particle* particle : particles_)
+		{
+			particle->Draw(camera_);
+		}
 	}
-	/*
-	for (Particle* particle : particles_)
-	{
-		particle->Draw(camera_);
-	}*/
+	
+	
 	
 	#pragma endregion
 	
@@ -444,7 +473,6 @@ void Game::Draw()
 	
 	#pragma endregion
 	
-
 	#pragma region モデル2
 	Model2::PreDraw(commandList);
 	
@@ -479,6 +507,24 @@ void Game::Draw()
 		{
 			ESC_Sprite_2->Draw();
 		}
+
+		if (OFF_Effect && ON_Effect == 0)
+		{
+			E_OFF_S_->Draw();
+		}
+		if (ON_Effect && OFF_Effect == 0)
+		{
+			E_ON_S_->Draw();
+		} 
+		
+		if (OFF_Particle && ON_Particle == 0)
+		{
+			P_OFF_S_->Draw();
+		}
+		if (ON_Particle && OFF_Particle == 0)
+		{
+			P_ON_S_->Draw();
+		}
 	}
 
 	// ポーズ画面
@@ -505,9 +551,6 @@ void Game::Draw()
 
 	#pragma endregion
 
-
-
-
 }
 
 
@@ -522,7 +565,8 @@ void Game::EffectBorn(Vector3 position)
 	{
 		Effect* effect = new Effect();
 		float rotate = distribution(randomEngine) * 3.14f;
-		float size = 1.0f + abs(distribution(randomEngine)) * 4;
+		//float size = 1.0f + abs(distribution(randomEngine)) * 4;
+		float size = 0.1f + abs(distribution(randomEngine)) * 0.5f;
 		effect->Initialize(modelEffect_, rotate, size, position, color);
 		effects_.push_back(effect);
 	}
@@ -596,8 +640,13 @@ Game::~Game()
 	delete PoseUI2_Sprite_;
 	delete PoseUI2_Sprite_2;
 
+	delete E_ON_S_;
+	delete E_OFF_S_;
 	
-#pragma endregion
+	delete P_ON_S_;
+	delete P_OFF_S_;
+
+	#pragma endregion
 
 
 
