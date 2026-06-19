@@ -101,10 +101,6 @@ void Game::Initialize()
 
     #pragma endregion
 
-
-
-
-
 	#pragma region 四角形_リング
 	//model_ = Model::Create();
 	
@@ -156,6 +152,12 @@ void Game::Initialize()
 	
 
 	#pragma endregion
+
+
+
+
+	//効果音ラボ/演出・アニメ[1]/爆発1
+	explosion_ = Audio::GetInstance()->LoadWave("Sounds/sound/Explosion1.mp3");
 
 
 
@@ -218,66 +220,78 @@ void Game::Update()
 
 
 		#pragma region エフェクト
-
-		// タイマーが動いていれば減算する
-		if (effectTimer_ > 0)
+		if (ON_Effect)
 		{
-			effectTimer_--;
+			// タイマーが動いていれば減算する
+			if (effectTimer_ > 0) 
+			{
+				effectTimer_--;
+			}
+
+			// エフェクト発生
+			if (rand() % 5 == 0) 
+			{
+				// タイマーが0の時だけ生成を許可する
+				if (effectTimer_ <= 0) 
+				{
+					Audio::GetInstance()->PlayWave(explosion_);
+					Vector3 position = {distribution(randomEngine), distribution(randomEngine), 0};
+					position *= 10;
+					EffectBorn(position);
+					// エフェクトを作ったらタイマーをセットして、しばらく作れないようにする
+					effectTimer_ = kEffectInterval;
+				}
+			}
+
+
+			// エフェクト更新
+			// effect_->Update();
+			for (Effect* effect : effects_)
+			{
+				effect->Update();
+			}
+
+			// デスフラグの立ったエフェクトを削除
+			effects_.remove_if
+			([](Effect* effect) {
+				if (effect->IsFinished())
+				{
+					delete effect;
+					return true;
+				}
+				return false;
+			});
 		}
 		
-		// エフェクト発生
-		if (rand() % 5 == 0)
-		{
-			// タイマーが0の時だけ生成を許可する
-			if (effectTimer_ <= 0)
-			{
-				Vector3 position = {distribution(randomEngine), distribution(randomEngine), 0};
-				position *= 10;
-				EffectBorn(position);
-				// エフェクトを作ったらタイマーをセットして、しばらく作れないようにする
-				effectTimer_ = kEffectInterval;
-			}
-			
-		}
-
-		// エフェクト更新
-		// effect_->Update();
-		for (Effect* effect : effects_) 
-		{
-			effect->Update();
-		}
-
-		// デスフラグの立ったエフェクトを削除
-		effects_.remove_if([](Effect* effect) {
-			if (effect->IsFinished()) {
-				delete effect;
-				return true;
-			}
-			return false;
-		});
 
 		#pragma endregion
 
 		#pragma region パーティクル
-
-		if (rand() % 20 == 0)
+		if (ON_Particle)
 		{
-			KamataEngine::Vector3 P_position = {distribution(randomEngine) * 30.0f, distribution(randomEngine) * 20.0f, 0};
-			ParticleBorn(P_position);
-		}
-
-		for (Particle* particle : particles_)
-		{
-			particle->Update();
-		}
-
-		particles_.remove_if([](Particle* particle_) {
-			if (particle_->isFinished()) {
-				delete particle_;
-				return true;
+			if (rand() % 20 == 0)
+			{
+				Audio::GetInstance()->PlayWave(explosion_);
+				KamataEngine::Vector3 P_position = {distribution(randomEngine) * 30.0f, distribution(randomEngine) * 20.0f, 0};
+				ParticleBorn(P_position);
 			}
-			return false;
-		});
+
+			for (Particle* particle : particles_) 
+			{
+				particle->Update();
+			}
+
+			particles_.remove_if
+			([](Particle* particle_) {
+				if (particle_->isFinished())
+				{
+					delete particle_;
+					return true;
+				}
+				return false;
+			});
+		}
+		
 
 		#pragma endregion
 	}
@@ -566,7 +580,7 @@ void Game::EffectBorn(Vector3 position)
 		Effect* effect = new Effect();
 		float rotate = distribution(randomEngine) * 3.14f;
 		//float size = 1.0f + abs(distribution(randomEngine)) * 4;
-		float size = 0.1f + abs(distribution(randomEngine)) * 0.5f;
+		float size = 0.5f + abs(distribution(randomEngine)) * 1.5f;
 		effect->Initialize(modelEffect_, rotate, size, position, color);
 		effects_.push_back(effect);
 	}

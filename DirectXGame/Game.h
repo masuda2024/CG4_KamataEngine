@@ -241,4 +241,6 @@ private:
 	int gameScore_ = 0;
 
 
+
+	uint32_t explosion_ = 0;
 };
